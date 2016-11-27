@@ -25,7 +25,7 @@ func TestListCommand(t *testing.T) {
 		t.Fatal("expected empty vault to have empty list()")
 	}
 
-	err = v.Add("testlocation", vault.Credential{"testuser", "testpass"})
+	err = v.Add("testlocation", vault.Credential{Username: "testuser", Password: "testpass"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -127,7 +127,7 @@ func TestSaveCommand(t *testing.T) {
 
 	savecmd := save(v, "testvault")
 
-	testcredential := vault.Credential{"testuser", "testpass"}
+	testcredential := vault.Credential{Username: "testuser", Password: "testpass"}
 
 	err = v.Add("testlocation", testcredential)
 	if err != nil {
@@ -203,7 +203,7 @@ func TestClipCommand(t *testing.T) {
 		t.Fatal("clipcmd should return an error with no args")
 	}
 
-	err = v.Add("testlocation", vault.Credential{"testuser", "testpass"})
+	err = v.Add("testlocation", vault.Credential{Username: "testuser", Password: "testpass"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -238,7 +238,7 @@ func TestSearchCommand(t *testing.T) {
 		t.Fatal("searchcmd could return an error with no args")
 	}
 
-	err = v.Add("testloc", vault.Credential{"testuser", "testpass"})
+	err = v.Add("testloc", vault.Credential{Username: "testuser", Password: "testpass"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -251,7 +251,7 @@ func TestSearchCommand(t *testing.T) {
 		t.Fatal("search command did not find our credential")
 	}
 
-	err = v.Add("loc2", vault.Credential{"testuser", "testpass"})
+	err = v.Add("loc2", vault.Credential{Username: "testuser", Password: "testpass"})
 	if err != nil {
 		t.Fatal(err)
 	}
