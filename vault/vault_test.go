@@ -95,6 +95,35 @@ func TestVaultAddMeta(t *testing.T) {
 	}
 }
 
+func TestEditWithMeta(t *testing.T) {
+	v, err := New("testpass")
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = v.Add("testlocation", Credential{Username: "testusername", Password: "testpassword"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = v.AddMeta("testlocation", "testmeta", "testmetaval")
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = v.Edit("testlocation", Credential{Username: "testusername2", Password: "testpassword2"})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cred, err := v.Get("testlocation")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	meta, exists := cred.Meta["testmeta"]
+	if !exists || meta != "testmetaval" {
+		t.Fatal("credential missing metadata after edit call")
+	}
+}
+
 func TestCredentialAddMeta(t *testing.T) {
 	cred := &Credential{Username: "testuser", Password: "testpassword"}
 	cred.AddMeta("foo", "bar")
