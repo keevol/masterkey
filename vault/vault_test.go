@@ -8,6 +8,40 @@ import (
 	"testing"
 )
 
+func TestVaultEditMeta(t *testing.T) {
+	v, err := New("testpass")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = v.Add("testlocation", Credential{Username: "test", Password: "test"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = v.EditMeta("testlocation", "test", "test1")
+	if err != ErrMetaDoesNotExist {
+		t.Fatal("expected EditMeta on nonexistent meta to return ErrMetaDoesNotExist")
+	}
+	err = v.AddMeta("testlocation", "test", "test1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = v.EditMeta("testlocation", "test", "test2")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cred, err := v.Get("testlocation")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	meta, exists := cred.Meta["test"]
+	if !exists || meta != "test2" {
+		t.Fatal("vault.EditMeta did not update the meta data")
+	}
+}
+
 func TestVaultAddMetaExistingMeta(t *testing.T) {
 	v, err := New("testpass")
 	if err != nil {
